@@ -67,6 +67,7 @@ std::string argument_convert(const T& t)
 // information for arguments is passed in using a map of strings
 // the first string is the variable name and the second is the value
 // converted to string
+/*
 std::string function_debug_arguments(const char* function_string, std::map<const std::string, const std::string> arguments)
 {
     std::string ret(function_string);
@@ -82,6 +83,7 @@ std::string function_debug_arguments(const char* function_string, std::map<const
     ret << ")";
     return ret;
 }
+*/
 
 // all arguments have to be of type string
 // which isn't a significant improvement over the map method
@@ -112,28 +114,73 @@ std::string function_debug_arguments(const char* function_string, const int coun
 }
 */
 
-// recursion function
-template<typename T, typename ... Targs>
-std::string function_debug_arguments(std::ostringstream& os, const int count, T value, Targs ... Fargs)
+// base recursive function
+template<typename T, typename U>
+/*std::string*/ void function_debug_arguments(std::ostringstream& os, T name, U value)
 {
-    if(count == 0) return ret;
+    //std::cout << "call2" << std::endl;
+
+    //std::cout << "DBG2: returning" << std::endl;
+    //std::cout << os.str() << std::endl;
+
+    os << name << "=" << value;
+    //std::cout << os.str() << std::endl;
+    
+    //return os.str();
+    return;
+}
+
+// recursion function
+// templates go in pairs to enforce arguments being passed as pairs of names and values
+// TODO
+// change to enforce T=std::string
+template<typename T, typename U, typename... Targs>
+/*std::string*/ void function_debug_arguments(std::ostringstream& os, T name, U value, Targs... Fargs)
+{
+    //std::cout << "call1" << std::endl;
+
+    //std::cout << "DBG1: count=" << count << " value=" << value << std::endl;
+
+    // TODO
+    // remove this does nothing
+    //if(count == 0) 
+    //{
+    //    std::cout << "count == 0" << std::endl;
+    //    return os.str();
+    //}
+
     //for(int i{0}; i < count; ++ i)
     //{
     //    os << va_arg(vargs, std::string) << "=" << va_arg(vargs, std::string);
     //    if(i < count - 1) os << ", ";
     //}
-    ret << value;
-    function_debug_arguments(ret, count - 1, Fargs ...);
+    
+    os << name << "=" << value << ", ";
+    //std::cout << os.str() << std::endl;
+    function_debug_arguments(os, Fargs...);
+
+    //return os.str();
+    return;
 }
 
 // entry (init) function
-template<typename T, typename ... Targs>
-std::string function_debug_arguments(const char* function_string, const int count, T value, Targs ... Fargs)
+// templates go in pairs to enforce arguments being passed as pairs of names and values
+// TODO
+// change to enforce T=std::string
+template<typename... Targs>
+std::string function_debug_arguments(const char* function_string, Targs... Fargs)
 {
+    //std::cout << "function_string=";
+    //std::cout << function_string << std::endl;
+
     std::ostringstream os;
     os << function_string;
-    os << "(";
-    os << function_debug_arguments(os, count, T, Fargs);
+    os << " -> (";
+    //std::cout << "DBG0 " << os.str() << std::endl;
+    //std::cout << "calling: os=" << os.str() << std::endl;
+    //os << function_debug_arguments(os, Fargs...);
+    function_debug_arguments(os, Fargs...);
+    //std::cout << "returned: os=" << os.str() << std::endl;
     os << ")";
      
     return os.str();
