@@ -1,5 +1,8 @@
 
-#define DEBUG_MESSAGE_ENABLE 1
+#if DEBUG_MESSAGE_DISABLE
+#else
+    #define DEBUG_MESSAGE_ENABLE 1
+#endif
 
 #define DEBUG_MESSAGE_OUTPUT std::cerr
 void DEBUG_MESSAGE(const std::string& message)
