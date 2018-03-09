@@ -34,6 +34,11 @@ bool is_last(Iter iter, const Cont& cont)
 }
 */
 
+std::string operator<<(std::string& l, const std::string& r)
+{
+    return l += r;
+}
+
 // create string containing function debug information including arguments
 // information
 // information for arguments is passed in using a map of strings
@@ -42,12 +47,13 @@ bool is_last(Iter iter, const Cont& cont)
 std::string function_debug_arguments(const char* function_string, std::map<const std::string, const std::string> arguments)
 {
     std::string ret(function_string);
-    ret += std::string("(");
+    //ret += std::string("(");
+    ret << "(";
     std::map<const std::string, const std::string>::const_iterator it{arguments.begin()};
     for(; it != arguments.end(); ++ it)
     {
         ret += std::string(it->first) + std::string("=") + std::string(it->second);
-        if(it != --arguments.end()) ret + std::string(",");
+        if(it != --arguments.end()) ret += std::string(", ");
         //if(!is_last(it, arguments)) ret + std::string(",");
     }
     ret + std::string(")");
