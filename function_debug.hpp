@@ -1,4 +1,8 @@
 
+#include <map>
+#include <string>
+
+
 #if DEBUG_MESSAGE_DISABLE
 #else
     #define DEBUG_MESSAGE_ENABLE 1
@@ -13,6 +17,23 @@ void DEBUG_MESSAGE(const std::string& message)
     #endif
 }
 
+/*
+// is last function
+// https://stackoverflow.com/questions/3516196/testing-whether-an-iterator-points-to-the-last-item
+
+template <typename Iter>
+Iter next(Iter iter)
+{
+    return ++ iter;
+}
+
+template <typename Iter, typename Cont>
+bool is_last(Iter iter, const Cont& cont)
+{
+    return (iter != cont.end()) && (next(iter) == cont.end());
+}
+*/
+
 // create string containing function debug information including arguments
 // information
 // information for arguments is passed in using a map of strings
@@ -21,14 +42,15 @@ void DEBUG_MESSAGE(const std::string& message)
 std::string function_debug_arguments(const char* function_string, std::map<const std::string, const std::string> arguments)
 {
     std::string ret(function_string);
-    ret << "(";
-    std::map<const std::string, const std::string>::const_iterator{arguments.begin()};
+    ret += std::string("(");
+    std::map<const std::string, const std::string>::const_iterator it{arguments.begin()};
     for(; it != arguments.end(); ++ it)
     {
-        ret << it->first << "=" << it->second;
-        if(it != arguments.end() - 1) ret << ",";
+        ret += std::string(it->first) + std::string("=") + std::string(it->second);
+        if(it != --arguments.end()) ret + std::string(",");
+        //if(!is_last(it, arguments)) ret + std::string(",");
     }
-    ret << ")";
+    ret + std::string(")");
     return ret;
 }
 
@@ -37,12 +59,13 @@ std::string function_debug_arguments(const char* function_string, std::map<const
 std::string function_debug_locals(const char* function_string, std::map<const std::string, const std::string> locals)
 {
     std::string ret(function_string);
-    ret << ": Local vars: ";
-    std::map<const std::string, const std::string>::const_iterator{locals.begin()};
+    ret += std::string(": Local vars: ");
+    std::map<const std::string, const std::string>::const_iterator it{locals.begin()};
     for(; it != locals.end(); ++ it)
     {
-        ret << it->first << "=" it->second;
-        if(it != arguments.end() - 1) ret << ", ";
+        ret += std::string(it->first) + std::string("=") + std::string(it->second);
+        if(it != --locals.end()) ret += std::string(", ");
+        //if(!is_last(it, locals)) ret + std::string(",");
     }
     return ret;
 }
