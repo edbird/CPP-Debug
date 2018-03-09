@@ -1,7 +1,7 @@
 
 #include <map>
 #include <string>
-#include <cstdarg>
+//#include <cstdarg>
 
 
 #if DEBUG_MESSAGE_DISABLE
@@ -91,6 +91,7 @@ std::string function_debug_arguments(const char* function_string, std::map<const
 // be formatted into names and values format
 // count is the number of arguments, however twice that number of
 // strings must be provided
+/*
 std::string function_debug_arguments(const char* function_string, const int count, ...)
 {
     va_list vargs;
@@ -107,6 +108,34 @@ std::string function_debug_arguments(const char* function_string, const int coun
     os << ")";
     
     va_end(vargs);
+    return os.str();
+}
+*/
+
+// recursion function
+template<typename T, typename ... Targs>
+std::string function_debug_arguments(std::ostringstream& os, const int count, T value, Targs ... Fargs)
+{
+    if(count == 0) return ret;
+    //for(int i{0}; i < count; ++ i)
+    //{
+    //    os << va_arg(vargs, std::string) << "=" << va_arg(vargs, std::string);
+    //    if(i < count - 1) os << ", ";
+    //}
+    ret << value;
+    function_debug_arguments(ret, count - 1, Fargs ...);
+}
+
+// entry (init) function
+template<typename T, typename ... Targs>
+std::string function_debug_arguments(const char* function_string, const int count, T value, Targs ... Fargs)
+{
+    std::ostringstream os;
+    os << function_string;
+    os << "(";
+    os << function_debug_arguments(os, count, T, Fargs);
+    os << ")";
+     
     return os.str();
 }
 
