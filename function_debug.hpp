@@ -53,7 +53,7 @@ std::string function_debug_arguments(const char* function_string, std::map<const
     for(; it != arguments.end(); ++ it)
     {
         ret << it->first << "=" << it->second;
-        if(it != --arguments.end()) ret << ", ");
+        if(it != --arguments.end()) ret << ", ";
         //if(!is_last(it, arguments)) ret + std::string(",");
     }
     ret << ")";
@@ -70,7 +70,7 @@ std::string function_debug_locals(const char* function_string, std::map<const st
     for(; it != locals.end(); ++ it)
     {
         ret << it->first << "=" << it->second;
-        if(it != --locals.end()) ret << ", ");
+        if(it != --locals.end()) ret << ", ";
         //if(!is_last(it, locals)) ret + std::string(",");
     }
     return ret;
