@@ -47,16 +47,16 @@ std::string operator<<(std::string& l, const std::string& r)
 std::string function_debug_arguments(const char* function_string, std::map<const std::string, const std::string> arguments)
 {
     std::string ret(function_string);
-    //ret += std::string("(");
+    //ret << "(");
     ret << "(";
     std::map<const std::string, const std::string>::const_iterator it{arguments.begin()};
     for(; it != arguments.end(); ++ it)
     {
-        ret += std::string(it->first) + std::string("=") + std::string(it->second);
-        if(it != --arguments.end()) ret += std::string(", ");
+        ret << it->first << "=" << it->second;
+        if(it != --arguments.end()) ret << ", ");
         //if(!is_last(it, arguments)) ret + std::string(",");
     }
-    ret + std::string(")");
+    ret << ")";
     return ret;
 }
 
@@ -65,12 +65,12 @@ std::string function_debug_arguments(const char* function_string, std::map<const
 std::string function_debug_locals(const char* function_string, std::map<const std::string, const std::string> locals)
 {
     std::string ret(function_string);
-    ret += std::string(": Local vars: ");
+    ret << ": Local vars: ";
     std::map<const std::string, const std::string>::const_iterator it{locals.begin()};
     for(; it != locals.end(); ++ it)
     {
-        ret += std::string(it->first) + std::string("=") + std::string(it->second);
-        if(it != --locals.end()) ret += std::string(", ");
+        ret << it->first << "=" << it->second;
+        if(it != --locals.end()) ret << ", ");
         //if(!is_last(it, locals)) ret + std::string(",");
     }
     return ret;
