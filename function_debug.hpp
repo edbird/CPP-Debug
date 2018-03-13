@@ -191,6 +191,7 @@ std::string function_debug_arguments(const char* function_string, Targs... Fargs
 
 // create string containing function debug information including local
 // variables
+/*
 std::string function_debug_locals(const char* function_string, std::map<const std::string, const std::string> locals)
 {
     std::string ret(function_string);
@@ -204,5 +205,50 @@ std::string function_debug_locals(const char* function_string, std::map<const st
     }
     return ret;
 }
+*/
+
+// terminating function
+template<typename T>
+void function_debug_locals(std::ostringstream& os, const std::string& name, T value)
+//void function_debug_locals(std::ostringstream& os, const char* const name, T value)
+{
+
+    os << name << "=" << value;
+    //std::cout << os.str() << std::endl;
+    
+    //return os.str();
+    return;
+}
+
+// recursive function
+template<typename T, typename... Targs>
+void function_debug_locals(std::ostringstream& os, const std::string& name, T value, Targs... Fargs)
+//void function_debug_locals(std::ostringstream& os, const char* const name, T value, Targs... Fargs)
+{
+
+    os << name << "=" << value << ", ";
+    //std::cout << os.str() << std::endl;
+    function_debug_locals(os, Fargs...);
+
+    //return os.str();
+    return;
+}
+
+// base function
+template<typename... Targs>
+//std::string function_debug_locals(const char* function_string, Targs... Fargs)
+std::string function_debug_locals(const std::string& function_string, Targs... Fargs)
+{
+    std::ostringstream os;
+    os << function_string;
+    //os << " -> ;
+    os << ": Local vars: ";
+
+    function_debug_locals(os, Fargs...);
+
+    return os.str();
+}
+
+
 
 #endif // FUNCTION_DEBUG_HPP
