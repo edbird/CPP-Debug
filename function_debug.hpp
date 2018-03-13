@@ -1,3 +1,5 @@
+#ifndef FUNCTION_DEBUG_HPP
+#define FUNCTION_DEBUG_HPP
 
 #include <map>
 #include <string>
@@ -202,3 +204,5 @@ std::string function_debug_locals(const char* function_string, std::map<const st
     }
     return ret;
 }
+
+#endif // FUNCTION_DEBUG_HPP
